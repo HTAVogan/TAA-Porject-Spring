@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
-import com.mysql.jdbc.Blob;
+
 
 @Entity
 public class Events {
