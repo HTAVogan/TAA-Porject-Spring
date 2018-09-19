@@ -19,6 +19,14 @@ public class User {
 	private long user_id;
 	private String username;
 	private String password;
+	private String email;
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	private List<StyleMusic> FavoriteStyles ;
 	@Id
 	@GeneratedValue
@@ -48,28 +56,42 @@ public class User {
 		joinColumns = {@JoinColumn ( name =  "user_id")},
 		inverseJoinColumns = { @JoinColumn(name = "syleMusic_id") }
 	)
-	public Collection<StyleMusic> getFavoriteStyles() {
+	public List<StyleMusic> getFavoriteStyles() {
 		return FavoriteStyles;
 	}
-	public void setFavoriteStyles(List<StyleMusic> favoriteStyles) {
-		FavoriteStyles = favoriteStyles;
+	public void setFavoriteStyles(List<StyleMusic> favList) {
+		FavoriteStyles = favList;
 	}
 	
-public User() {
+	public User() {
 		
 	}
+	
+	public User(long id) {
+		this.user_id = id;
+	}
+	
 	public User(String username) {
 		this.username = username;
 		this.FavoriteStyles = new ArrayList<StyleMusic>();
 	}
+	
 	public User(String username,String password,List<StyleMusic> lm) {
 		this.username = username;
 		this.FavoriteStyles = lm;
 		this.password = password;
 	}
+	
 	public User(String username, String password) {
 		this.username = username;
 		this.FavoriteStyles = new ArrayList<StyleMusic>();
 		this.password = password;
+	}
+	
+	public User(String username, String password, String email) {
+		this.username = username;
+		this.FavoriteStyles = new ArrayList<StyleMusic>();
+		this.password = password;
+		this.email = email;
 	}
 }
