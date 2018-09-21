@@ -3,7 +3,10 @@ package jpa.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,9 +31,9 @@ public class UserController {
   /**
    * GET /create  --> Create a new user and save it in the database.
    */
-  @RequestMapping("/user/create")
+  @RequestMapping("/user/create/{username}{password}/{email}")
   @ResponseBody
-  public String create(String username, String password, String email) {
+  public String create(@PathVariable("username")String username, @PathVariable("password")String password, @PathVariable("email")String email) {
     String userId = "";
     try {
       User user = new User(username, password, email);
@@ -43,12 +46,31 @@ public class UserController {
     return "User succesfully created with id = " + userId;
   }
   
+  public boolean userExistWithId(long id) {
+	  boolean ret = false;
+	  try{
+		  User foundUser = userRepository.findOne(id);
+		  if(foundUser != null) {
+			  System.out.println("User with id " + id + " does exist : name is '" + foundUser.getUsername()+"'");
+			  ret = true;
+		  }
+		  else {
+			  System.out.println("User with id " + id + " does NOT exist !");
+		  }
+	  }
+	  catch (Exception ex) {
+		  System.err.println("Error while checking user with id : " + id + " exist or not : " + ex.toString());
+	  }
+	  return ret;
+	  
+  }
+  
   /**
    * GET /create  --> Create a new user with no email set and save it in the database.
    */
-  @RequestMapping("/user/create")
+  @RequestMapping("/user/create/{username}/{password}")
   @ResponseBody
-  public String create(String username, String password) {
+  public String create(@PathVariable("username")String username, @PathVariable("password")String password) {
     String userId = "";
     try {
       User user = new User(username, password);
@@ -64,11 +86,11 @@ public class UserController {
   /**
    * GET /delete  --> Delete the user having the passed id.
    */
-  @RequestMapping("/user/delete")
+  @RequestMapping("/user/delete/{id}")
   @ResponseBody
-  public String delete(long id) {
+  public String delete(@PathVariable("id")String id) {
     try {
-      User user = new User(id);
+      User user = new User(Long.valueOf(id));
       userRepository.delete(user);
     }
     catch (Exception ex) {
@@ -81,18 +103,23 @@ public class UserController {
    * GET /get-by-email  --> Return the id for the user having the passed
    * email.
    */
-  @RequestMapping("/user/get-by-email")
+  @RequestMapping("/user/get-by-email/{email}")
   @ResponseBody
-  public String getByEmail(String email) {
+  public ResponseEntity<List<User>> getByEmail(@PathVariable("email")String email) {
     String userId = "";
     try {
-      User user = userRepository.findByEmail(email);
-      userId = String.valueOf(user.getUser_id());
+      List<User> foundUsers = userRepository.findByEmail(email);
+      if(foundUsers.isEmpty()) {
+    	  return new ResponseEntity<List<User>>(foundUsers, HttpStatus.NO_CONTENT);
+      }
+      else {
+    	  return new ResponseEntity<List<User>>(foundUsers, HttpStatus.ACCEPTED);
+      }
+      //userId = String.valueOf(user.getUser_id());
     }
     catch (Exception ex) {
-      return "User not found";
+      return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
     }
-    return "The user id is: " + userId;
   }
   
   
