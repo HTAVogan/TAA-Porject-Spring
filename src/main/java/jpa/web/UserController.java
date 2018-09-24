@@ -128,11 +128,11 @@ public class UserController {
    * GET /update  --> Update the email and the name for the user in the 
    * database having the passed id.
    */
-  @RequestMapping("/addToFav")
+  @RequestMapping("/addToFav/{id}/{newStyle}")
   @ResponseBody
-  public String AddNewStyleMusic(long id, String newStyle) {
+  public String AddNewStyleMusic(@PathVariable("id")String id, @PathVariable("newStyle")String newStyle) {
     try {
-      User user = userRepository.findOne(id);
+      User user = userRepository.findOne(Long.valueOf(id));
       List<StyleMusic> favList = user.getFavoriteStyles();
       StyleMusic foundMusic = styleMusicRepository.findByStyle(newStyle);
       favList.add(foundMusic);
