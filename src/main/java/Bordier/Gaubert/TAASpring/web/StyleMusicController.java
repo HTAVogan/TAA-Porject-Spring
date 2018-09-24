@@ -1,13 +1,13 @@
-package jpa.web;
+package Bordier.Gaubert.TAASpring.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jpa.Entites.StyleMusic;
-import jpa.Entites.User;
-import jpa.repository.StyleMusicRepository;
+import Bordier.Gaubert.TAASpring.StyleMusic;
+import Bordier.Gaubert.TAASpring.User;
+import Bordier.Gaubert.TAASpring.repository.StyleMusicRepository;
 
 @Controller
 public class StyleMusicController {

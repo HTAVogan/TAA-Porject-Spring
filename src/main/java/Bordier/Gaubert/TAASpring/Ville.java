@@ -1,4 +1,4 @@
-package jpa.Entites;
+package Bordier.Gaubert.TAASpring;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;

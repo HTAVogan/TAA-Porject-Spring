@@ -1,4 +1,4 @@
-package jpa.web;
+package Bordier.Gaubert.TAASpring.web;
 
 import java.util.List;
 
@@ -6,14 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jpa.Entites.StyleMusic;
-import jpa.Entites.User;
-import jpa.repository.StyleMusicRepository;
-import jpa.repository.UserRepository;
+import Bordier.Gaubert.TAASpring.StyleMusic;
+import Bordier.Gaubert.TAASpring.User;
+import Bordier.Gaubert.TAASpring.repository.StyleMusicRepository;
+import Bordier.Gaubert.TAASpring.repository.UserRepository;
 
 
 
@@ -31,9 +33,9 @@ public class UserController {
   /**
    * GET /create  --> Create a new user and save it in the database.
    */
-  @RequestMapping("/user/create/{username}{password}/{email}")
-  @ResponseBody
-  public String create(@PathVariable("username")String username, @PathVariable("password")String password, @PathVariable("email")String email) {
+  @GetMapping("/user/create/{username}/{password}/{email}")
+  
+  public @ResponseBody String create(@PathVariable("username")String username, @PathVariable("password")String password, @PathVariable("email")String email) {
     String userId = "";
     try {
       User user = new User(username, password, email);
@@ -44,6 +46,12 @@ public class UserController {
       return "Error creating the user: " + ex.toString();
     }
     return "User succesfully created with id = " + userId;
+  }
+  @RequestMapping(value="/user", method=RequestMethod.GET,produces="application/json")
+  @ResponseBody
+  public List<User> allUser(){
+	 
+	 return userRepository.findAll();
   }
   
   public boolean userExistWithId(long id) {
@@ -68,11 +76,12 @@ public class UserController {
   /**
    * GET /create  --> Create a new user with no email set and save it in the database.
    */
-  @RequestMapping("/user/create/{username}/{password}")
-  @ResponseBody
-  public String create(@PathVariable("username")String username, @PathVariable("password")String password) {
-    String userId = "";
-    try {
+  @GetMapping("/user/create/{username}/{password}")
+  public @ResponseBody String create(@PathVariable("username")String username, @PathVariable("password")String password) {
+    String userId = "";	
+    return "TA MERE EN SHORT";
+  }
+   /* try {
       User user = new User(username, password);
       userRepository.save(user);
       userId = String.valueOf(user.getUser_id());
@@ -81,7 +90,7 @@ public class UserController {
       return "Error creating the user: " + ex.toString();
     }
     return "User succesfully created with id = " + userId;
-  }
+  }**/
   
   /**
    * GET /delete  --> Delete the user having the passed id.

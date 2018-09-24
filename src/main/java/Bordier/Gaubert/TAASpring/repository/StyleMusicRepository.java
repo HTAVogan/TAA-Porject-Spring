@@ -1,8 +1,8 @@
-package jpa.repository;
+package Bordier.Gaubert.TAASpring.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import jpa.Entites.StyleMusic;
+import Bordier.Gaubert.TAASpring.StyleMusic;
 
 public interface StyleMusicRepository extends JpaRepository<StyleMusic, Long>{
 	

@@ -1,4 +1,4 @@
-package jpa.web;
+package Bordier.Gaubert.TAASpring.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jpa.Entites.Events;
-import jpa.Entites.User;
-import jpa.repository.EventsRepository;
-import jpa.repository.UserRepository;
+import Bordier.Gaubert.TAASpring.Events;
+import Bordier.Gaubert.TAASpring.User;
+import Bordier.Gaubert.TAASpring.repository.EventsRepository;
+import Bordier.Gaubert.TAASpring.repository.UserRepository;
 
 @Controller
 public class EventsController {

@@ -1,12 +1,12 @@
-package jpa.repository;
+package Bordier.Gaubert.TAASpring.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import jpa.Entites.Departement;
-import jpa.Entites.Location;
-import jpa.Entites.Region;
+import Bordier.Gaubert.TAASpring.Departement;
+import Bordier.Gaubert.TAASpring.Location;
+import Bordier.Gaubert.TAASpring.Region;
 
 public interface LocationRepository extends JpaRepository<Location, Long>{
 	

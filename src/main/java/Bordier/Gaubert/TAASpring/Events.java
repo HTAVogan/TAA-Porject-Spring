@@ -1,4 +1,4 @@
-package jpa.Entites;
+package Bordier.Gaubert.TAASpring;
 
 import java.sql.Date;
 import java.util.ArrayList;
