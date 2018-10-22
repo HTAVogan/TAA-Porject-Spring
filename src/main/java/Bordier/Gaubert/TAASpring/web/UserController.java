@@ -57,7 +57,7 @@ public class UserController {
   public boolean userExistWithId(long id) {
 	  boolean ret = false;
 	  try{
-		  User foundUser = userRepository.findOne(id);
+		  User foundUser = userRepository.getOne(id);
 		  if(foundUser != null) {
 			  System.out.println("User with id " + id + " does exist : name is '" + foundUser.getUsername()+"'");
 			  ret = true;
@@ -141,7 +141,7 @@ public class UserController {
   @ResponseBody
   public String AddNewStyleMusic(@PathVariable("id")String id, @PathVariable("newStyle")String newStyle) {
     try {
-      User user = userRepository.findOne(Long.valueOf(id));
+      User user = userRepository.getOne(Long.valueOf(id));
       List<StyleMusic> favList = user.getFavoriteStyles();
       StyleMusic foundMusic = styleMusicRepository.findByStyle(newStyle);
       favList.add(foundMusic);

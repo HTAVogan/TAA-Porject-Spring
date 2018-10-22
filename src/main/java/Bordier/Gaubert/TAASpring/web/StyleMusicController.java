@@ -47,7 +47,7 @@ public class StyleMusicController {
 		  public String getById(long id) {
 			  String styleMusicId =  "", styleMusicStyle = "";
 			  try {
-				  StyleMusic music = styleMusicRepository.findByStyleMusicId(id);
+				  StyleMusic music = styleMusicRepository.findById(id);
 				  styleMusicId = String.valueOf(music.getStyleMusic_id());
 				  styleMusicStyle = music.getStyle();
 				  

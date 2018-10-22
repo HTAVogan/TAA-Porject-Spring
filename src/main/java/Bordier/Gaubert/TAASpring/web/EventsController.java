@@ -1,5 +1,7 @@
 package Bordier.Gaubert.TAASpring.web;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,7 @@ public class EventsController {
 			  //User foundUser = new User();
 			  //foundUser.setUser_id(user_id);
 
-			  User foundUser = userRepository.findOne(Long.valueOf(user_id));
+			  User foundUser = userRepository.getOne(Long.valueOf(user_id));
 			  if(foundUser != null) {
 				  Events newEvents = new Events();
 				  newEvents.setTitle(title);
