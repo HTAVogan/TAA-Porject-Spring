@@ -12,6 +12,4 @@ public interface EventsRepository extends JpaRepository<Events, Long>{
 	Events findByTitle(String title);
 	
 	List<Events> findAllByLocations(Location locations);
-	
-	
 }
