@@ -29,19 +29,22 @@ public class EventsController {
 	 */
 	  @RequestMapping(value="/events/create",method=RequestMethod.POST)
 	  @ResponseBody
-	  public String create(@RequestBody String title, String user_id) {
-		  String eventsCreatedId = "";
+	  public String create(@RequestBody Events event) {
+		 String eventsCreatedId = "";
+		 long user_id = event.getCreator().getUser_id();
+		 String title= event.getTitle();
+		  System.out.println(title + user_id);
 		  try {
 			  // Other Method to get User by Id
 			  //User foundUser = new User();
 			  //foundUser.setUser_id(user_id);
 			  User foundUser = userRepository.getOne(Long.valueOf(user_id));
+			  
 			  if(foundUser != null) {
-				  Events newEvents = new Events();
-				  newEvents.setTitle(title);
-				  newEvents.setCreator(foundUser);
-				  eventsRepository.save(newEvents);				  
-			  }else {
+				  eventsRepository.save(event);	
+				  eventsCreatedId = Long.toString(event.getId());
+			  }
+			  else {
 				  String ret = "Can't create Event : No User found with id : " + user_id + "!";
 				  System.err.println(ret);
 				  return ret;
