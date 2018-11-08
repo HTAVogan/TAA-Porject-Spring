@@ -1,10 +1,11 @@
-package Bordier.Gaubert.TAASpring.web;
+package Bordier.Gaubert.TAASpring.swaggerConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.common.base.Predicate;
 
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -17,7 +18,8 @@ public class RestApplication {
 	@Bean
 	public Docket postsApi() {
 		return new Docket(DocumentationType.SWAGGER_2).groupName("public-api")
-				.apiInfo(apiInfo()).select().paths(postPaths()).build();
+				.apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.basePackage("Bordier.Gaubert.TAASpring.web")).build();
+				// paths(postPaths()).build
 	}
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title("Taa Project API")

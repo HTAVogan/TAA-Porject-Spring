@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +18,12 @@ import Bordier.Gaubert.TAASpring.StyleMusic;
 import Bordier.Gaubert.TAASpring.User;
 import Bordier.Gaubert.TAASpring.repository.StyleMusicRepository;
 import Bordier.Gaubert.TAASpring.repository.UserRepository;
+import io.swagger.annotations.Api;
 
 
 
 @Controller
+@Api(value="Usercontroller", produces=MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
 	 // Private fields
@@ -34,17 +37,18 @@ public class UserController {
 
   @RequestMapping( value ="/user/create/{username}/{password}/{email}",method=RequestMethod.POST)
   
-  public @ResponseBody String create(@PathVariable("username")String username, @PathVariable("password")String password, @PathVariable("email")String email) {
+  public @ResponseBody User create(@PathVariable("username")String username, @PathVariable("password")String password, @PathVariable("email")String email) {
     String userId = "";
+    User user = new User(username, password, email);
     try {
-      User user = new User(username, password, email);
+      
       userRepository.save(user);
       userId = String.valueOf(user.getUser_id());
     }
     catch (Exception ex) {
-      return "Error creating the user: " + ex.toString();
+      return null;
     }
-    return "User succesfully created with id = " + userId;
+    return user;
   }
   @RequestMapping(value="/user", method=RequestMethod.GET,produces="application/json")
   @ResponseBody
@@ -71,24 +75,30 @@ public class UserController {
 	  return ret;
 	  
   }
-  @RequestMapping(value= "/hello", method = RequestMethod.POST)
-  @ResponseBody
-  public String hello() {
-    return "Hello";
+
+  @RequestMapping(value="/user/{id}",method=RequestMethod.GET)
+  public @ResponseBody User getById(@PathVariable("id") String id) {
+	  long ID=(long) Long.valueOf(id);
+	  try {
+		  return userRepository.getOne(ID);
+	  }catch(Exception ex ) {
+		  return null;
+	  }
   }
 
   @RequestMapping(value= "/user/create/{username}/{password}", method= RequestMethod.POST)
-  public @ResponseBody String create(@PathVariable("username")String username, @PathVariable("password")String password) {
+  public @ResponseBody User create(@PathVariable("username")String username, @PathVariable("password")String password) {
     String userId = "";	
+    User user = new User(username, password);
    try {
-      User user = new User(username, password);
+      
       userRepository.save(user);
       userId = String.valueOf(user.getUser_id());
     }
     catch (Exception ex) {
-      return "Error creating the user: " + ex.toString();
+      return null;
     }
-    return "User succesfully created with id = " + userId;
+    return user;
   }
   
   /**
@@ -111,7 +121,7 @@ public class UserController {
    * GET /get-by-email  --> Return the id for the user having the passed
    * email.
    */
-  @RequestMapping("/user/get-by-email/{email}")
+  @RequestMapping(value ="/user/get-by-email/{email}", method=RequestMethod.GET)
   @ResponseBody
   public ResponseEntity<List<User>> getByEmail(@PathVariable("email")String email) {
     String userId = "";
@@ -136,9 +146,9 @@ public class UserController {
    * GET /update  --> Update the email and the name for the user in the 
    * database having the passed id.
    */
-  @RequestMapping("/addToFav/{id}/{newStyle}")
+  @RequestMapping(value="/addToFav/{id}/{newStyle}", method=RequestMethod.PUT)
   @ResponseBody
-  public String AddNewStyleMusic(@PathVariable("id")String id, @PathVariable("newStyle")String newStyle) {
+  public User AddNewStyleMusic(@PathVariable("id")String id, @PathVariable("newStyle")String newStyle) {
     try {
       User user = userRepository.getOne(Long.valueOf(id));
       List<StyleMusic> favList = user.getFavoriteStyles();
@@ -146,11 +156,13 @@ public class UserController {
       favList.add(foundMusic);
       user.setFavoriteStyles(favList);
       userRepository.save(user);
+      user = userRepository.getOne(Long.valueOf(id));
+      return user;
     }
     catch (Exception ex) {
-      return "Error updating the user: " + ex.toString();
+      return null;
     }
-    return "User succesfully updated!";
+    
   }
   
 }

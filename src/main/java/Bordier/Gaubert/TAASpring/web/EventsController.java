@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,8 @@ import Bordier.Gaubert.TAASpring.Events;
 import Bordier.Gaubert.TAASpring.User;
 import Bordier.Gaubert.TAASpring.repository.EventsRepository;
 import Bordier.Gaubert.TAASpring.repository.UserRepository;
-
+import io.swagger.annotations.Api;
+@Api(value="eventcontroller", produces=MediaType.APPLICATION_JSON_VALUE)
 @Controller
 public class EventsController {
 
@@ -33,7 +35,7 @@ public class EventsController {
 	 */
 	@RequestMapping(value="/events/create",method=RequestMethod.POST)
 	@ResponseBody
-	public String create(@RequestBody Events event) {
+	public Events create(@RequestBody Events event) {
 		String eventsCreatedId = "";
 		long user_id = event.getCreator().getUser_id();
 		String title= event.getTitle();
@@ -51,14 +53,14 @@ public class EventsController {
 			else {
 				String ret = "Can't create Event : No User found with id : " + user_id + "!";
 				System.err.println(ret);
-				return ret;
+				return null;
 			}
 		}
 		catch(Exception ex) {
 			System.err.println("Error at Events creation : " + ex.toString());
-			return "Couldn't create new event";
+			return null;
 		}
-		return eventsCreatedId;
+		return event;
 	}
 
 	@RequestMapping(value="/events", method=RequestMethod.GET,produces="application/json")
@@ -71,9 +73,7 @@ public class EventsController {
 	@ResponseBody
 	public Events getOne(@PathVariable("id") String id) {
 	    try {
-	    	
 	        long ID=(long) Long.valueOf(id);
-	        String eventId =""; String eventName = "";
 	       return  eventsRepository.findById(ID);
 	       // eventId = String.valueOf(event.getId());
 	       /* eventName = event.getTitle();
