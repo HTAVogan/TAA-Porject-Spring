@@ -1,9 +1,13 @@
 package Bordier.Gaubert.TAASpring.web;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import Bordier.Gaubert.TAASpring.Events;
@@ -23,22 +27,24 @@ public class EventsController {
 	/**
 	 * GET /create  --> Create a new style music and save it in the database.
 	 */
-	  @RequestMapping("/events/create/{title}/{user_id}")
+	  @RequestMapping(value="/events/create",method=RequestMethod.POST)
 	  @ResponseBody
-	  public String create(@PathVariable("title")String title, @PathVariable("user_id")String user_id) {
-		  String eventsCreatedId = "";
+	  public String create(@RequestBody Events event) {
+		 String eventsCreatedId = "";
+		 long user_id = event.getCreator().getUser_id();
+		 String title= event.getTitle();
+		  System.out.println(title + user_id);
 		  try {
 			  // Other Method to get User by Id
 			  //User foundUser = new User();
 			  //foundUser.setUser_id(user_id);
-
-			  User foundUser = userRepository.findOne(Long.valueOf(user_id));
+			  User foundUser = userRepository.getOne(Long.valueOf(user_id));
+			  
 			  if(foundUser != null) {
-				  Events newEvents = new Events();
-				  newEvents.setTitle(title);
-				  newEvents.setCreator(foundUser);
-				  eventsRepository.save(newEvents);				  
-			  }else {
+				  eventsRepository.save(event);	
+				  eventsCreatedId = Long.toString(event.getId());
+			  }
+			  else {
 				  String ret = "Can't create Event : No User found with id : " + user_id + "!";
 				  System.err.println(ret);
 				  return ret;

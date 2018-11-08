@@ -8,5 +8,5 @@ public interface StyleMusicRepository extends JpaRepository<StyleMusic, Long>{
 	
 	StyleMusic findByStyle(String style);
 	
-	StyleMusic findByStyleMusicId(long id);
+	StyleMusic findById(long id);
 }

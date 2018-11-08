@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,10 +31,8 @@ public class UserController {
 	  @Autowired
 	  private StyleMusicRepository styleMusicRepository;
 	
-  /**
-   * GET /create  --> Create a new user and save it in the database.
-   */
-  @GetMapping("/user/create/{username}/{password}/{email}")
+
+  @RequestMapping( value ="/user/create/{username}/{password}/{email}",method=RequestMethod.POST)
   
   public @ResponseBody String create(@PathVariable("username")String username, @PathVariable("password")String password, @PathVariable("email")String email) {
     String userId = "";
@@ -57,7 +56,7 @@ public class UserController {
   public boolean userExistWithId(long id) {
 	  boolean ret = false;
 	  try{
-		  User foundUser = userRepository.findOne(id);
+		  User foundUser = userRepository.getOne(id);
 		  if(foundUser != null) {
 			  System.out.println("User with id " + id + " does exist : name is '" + foundUser.getUsername()+"'");
 			  ret = true;
@@ -72,16 +71,16 @@ public class UserController {
 	  return ret;
 	  
   }
-  
-  /**
-   * GET /create  --> Create a new user with no email set and save it in the database.
-   */
-  @GetMapping("/user/create/{username}/{password}")
+  @RequestMapping(value= "/hello", method = RequestMethod.POST)
+  @ResponseBody
+  public String hello() {
+    return "Hello";
+  }
+
+  @RequestMapping(value= "/user/create/{username}/{password}", method= RequestMethod.POST)
   public @ResponseBody String create(@PathVariable("username")String username, @PathVariable("password")String password) {
     String userId = "";	
-    return "TA MERE EN SHORT";
-  }
-   /* try {
+   try {
       User user = new User(username, password);
       userRepository.save(user);
       userId = String.valueOf(user.getUser_id());
@@ -90,12 +89,12 @@ public class UserController {
       return "Error creating the user: " + ex.toString();
     }
     return "User succesfully created with id = " + userId;
-  }**/
+  }
   
   /**
    * GET /delete  --> Delete the user having the passed id.
    */
-  @RequestMapping("/user/delete/{id}")
+  @RequestMapping(value= "/user/delete/{id}",method=RequestMethod.DELETE)
   @ResponseBody
   public String delete(@PathVariable("id")String id) {
     try {
@@ -141,7 +140,7 @@ public class UserController {
   @ResponseBody
   public String AddNewStyleMusic(@PathVariable("id")String id, @PathVariable("newStyle")String newStyle) {
     try {
-      User user = userRepository.findOne(Long.valueOf(id));
+      User user = userRepository.getOne(Long.valueOf(id));
       List<StyleMusic> favList = user.getFavoriteStyles();
       StyleMusic foundMusic = styleMusicRepository.findByStyle(newStyle);
       favList.add(foundMusic);
