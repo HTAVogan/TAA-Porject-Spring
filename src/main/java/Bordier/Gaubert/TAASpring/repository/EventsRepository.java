@@ -10,6 +10,7 @@ import Bordier.Gaubert.TAASpring.Location;
 public interface EventsRepository extends JpaRepository<Events, Long>{
 
 	Events findByTitle(String title);
+	Events findById(long id);
 	
 	List<Events> findAllByLocations(Location locations);
 }
