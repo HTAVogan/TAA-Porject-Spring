@@ -19,6 +19,7 @@ public class Events {
 	private User creator;
 	private String url;
 	private List<Location> locations;
+	private List<StyleMusic> musicstyles;
 	private Date date_start;
 	private Date date_end;
 	private byte[] img;
@@ -129,5 +130,12 @@ public class Events {
 	}
 	public void setLocations(List<Location> locations) {
 		this.locations = locations;
+	}
+	@ManyToMany
+	public List<StyleMusic> getMusicstyles() {
+		return musicstyles;
+	}
+	public void setMusicstyles(List<StyleMusic> musicstyles) {
+		this.musicstyles = musicstyles;
 	}
 }
