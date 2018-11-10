@@ -21,6 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	//@Query("update User u set u.favoriteStyle = set.favoriteStyle & ?1 where u.id = ?2")
 	@Query(value="UPDATE User SET favoriteStyle = 1")
 	int setFixedFirstnameFor(long id, long lastname);*/
-	
+	User findByUsername(String username);
 	List<User> findByEmail(String email);
 }

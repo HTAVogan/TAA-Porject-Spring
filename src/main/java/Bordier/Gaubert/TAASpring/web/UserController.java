@@ -133,7 +133,6 @@ public class UserController {
       else {
     	  return new ResponseEntity<List<User>>(foundUsers, HttpStatus.ACCEPTED);
       }
-      //userId = String.valueOf(user.getUser_id());
     }
     catch (Exception ex) {
       return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
