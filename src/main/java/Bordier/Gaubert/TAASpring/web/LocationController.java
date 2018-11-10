@@ -1,9 +1,11 @@
 package Bordier.Gaubert.TAASpring.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import Bordier.Gaubert.TAASpring.Location;
@@ -11,17 +13,58 @@ import Bordier.Gaubert.TAASpring.Region;
 import Bordier.Gaubert.TAASpring.Departement;
 import Bordier.Gaubert.TAASpring.Ville;
 import Bordier.Gaubert.TAASpring.repository.LocationRepository;
-
+import io.swagger.annotations.Api;
+@Api(value="Locationcontroller", produces=MediaType.APPLICATION_JSON_VALUE)
 @Controller
 public class LocationController {
 	
 	@Autowired
 	private LocationRepository locationRepository;
 	
+	
+	@RequestMapping(value="/locations/departement/create" ,method=RequestMethod.POST)
+	@ResponseBody
+	public Departement createD(Departement name) {
+		try {
+			Location foundedcity = locationRepository.findByName(name.getName());
+			if(foundedcity == null) {
+				
+				locationRepository.save(name);
+				return name;
+			}
+			else {
+				System.out.println("Departement deja présent");
+				return null;
+			}
+		}
+		catch(Exception ex){
+			System.out.println("Problem a la creation du Departement");
+			return null;
+		}
+	}
+	@RequestMapping(value="/locations/ville/create" ,method=RequestMethod.POST)
+	@ResponseBody
+	public Ville createV(Ville name) {
+		try {
+			Location foundedcity = locationRepository.findByName(name.getName());
+			if(foundedcity == null) {
+				locationRepository.save(name);
+				return name;
+			}
+			else {
+				System.out.println("Ville deja présente");
+				return null;
+			}
+		}
+		catch(Exception ex){
+			System.out.println("Problem a la creation de la ville");
+			return null;
+		}
+	}
 	/**
 	 * GET /create  --> Create a new location and save it in the database.
 	 */
-	  @RequestMapping("/locations/create/{name}/{type}")
+	  @RequestMapping(value="/locations/create")
 	  @ResponseBody
 	  public Location create(@PathVariable("name")String name, @PathVariable("type")String type) {
 		  String locationCreatedId = "";
