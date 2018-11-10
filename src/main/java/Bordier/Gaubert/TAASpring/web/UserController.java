@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,19 +36,24 @@ public class UserController {
 	  private StyleMusicRepository styleMusicRepository;
 	
 
-  @RequestMapping( value ="/user/create/{username}/{password}/{email}",method=RequestMethod.POST)
-  
-  public @ResponseBody User create(@PathVariable("username")String username, @PathVariable("password")String password, @PathVariable("email")String email) {
-    String userId = "";
-    User user = new User(username, password, email);
-    try {
-      
-      userRepository.save(user);
-      userId = String.valueOf(user.getUser_id());
-    }
-    catch (Exception ex) {
-      return null;
-    }
+  @RequestMapping( value ="/user/create",method=RequestMethod.POST)
+  @ResponseBody
+  public User create(@RequestBody User user) {
+	User foundUser = userRepository.getOne(user.getUser_id());
+	System.out.println(foundUser.getUser_id() == 0 ? "no foundUser" : "Userfound : " + user.getUsername());
+	if(foundUser.getUser_id() == 0) {
+		try {
+	      userRepository.save(user);
+	      System.out.println("User create correctly : " + user.getUsername());
+	    }
+	    catch (Exception ex) {
+	    	System.out.println("error encounter while saving new user to db : " + ex.toString());
+	    	return null;
+	    }
+  	}
+	else {
+		System.out.println("User with username already exist in db ! plz retry with an other name");
+	}
     return user;
   }
   @RequestMapping(value="/user", method=RequestMethod.GET,produces="application/json")
