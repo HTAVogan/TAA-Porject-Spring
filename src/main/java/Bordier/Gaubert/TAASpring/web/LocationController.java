@@ -64,7 +64,7 @@ public class LocationController {
 	/**
 	 * GET /create  --> Create a new location and save it in the database.
 	 */
-	  @RequestMapping(value="/locations/create")
+	  @RequestMapping(value="/locations/create" ,method=RequestMethod.POST)
 	  @ResponseBody
 	  public Location create(@PathVariable("name")String name, @PathVariable("type")String type) {
 		  String locationCreatedId = "";
@@ -103,7 +103,7 @@ public class LocationController {
 	  	/**
 		 * GET /get  --> get location id with name.
 		 */
-		  @RequestMapping("/locations/get/{name}")
+		  @RequestMapping(value="/locations/get/{name}", method=RequestMethod.GET)
 		  @ResponseBody
 		  public String get(@PathVariable("name")String name) {
 			  String locationId = "";
