@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import Bordier.Gaubert.TAASpring.Events;
 import Bordier.Gaubert.TAASpring.StyleMusic;
 import Bordier.Gaubert.TAASpring.User;
 import Bordier.Gaubert.TAASpring.repository.StyleMusicRepository;
@@ -63,6 +64,11 @@ public class UserController {
 	 return userRepository.findAll();
   }
   
+  @RequestMapping(value="user/getbyusername/{username}")
+  public User getUserByUsername(@PathVariable("username") String username) {
+	  return userRepository.findByUsername(username);	
+  }
+  
   public boolean userExistWithId(long id) {
 	  boolean ret = false;
 	  try{
@@ -81,7 +87,17 @@ public class UserController {
 	  return ret;
 	  
   }
-
+  @RequestMapping(value="/user/addEvent", method=RequestMethod.PUT)
+  public @ResponseBody User addNewEvent(@RequestBody User u,@RequestBody Events e) {
+	  List<Events>es =u.getEventsFaved();
+	  es.add(e);
+	  u.setEventsFaved(es);
+	  userRepository.save(u);
+	  return u;
+  }
+  
+  
+  
   @RequestMapping(value="/user/{id}",method=RequestMethod.GET)
   public @ResponseBody User getById(@PathVariable("id") String id) {
 	  long ID=(long) Long.valueOf(id);

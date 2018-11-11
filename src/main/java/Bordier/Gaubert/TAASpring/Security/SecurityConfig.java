@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import Bordier.Gaubert.TAASpring.User;
+import Bordier.Gaubert.TAASpring.repository.UserRepository;
 import Bordier.Gaubert.TAASpring.web.*;
 
 @Configuration

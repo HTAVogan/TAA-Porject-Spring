@@ -64,7 +64,7 @@ public class LocationController {
 	/**
 	 * GET /create  --> Create a new location and save it in the database.
 	 */
-	  @RequestMapping(value="/locations/create" ,method=RequestMethod.POST)
+	  @RequestMapping(value="/locations/create/{name}/{type}" ,method=RequestMethod.POST)
 	  @ResponseBody
 	  public Location create(@PathVariable("name")String name, @PathVariable("type")String type) {
 		  String locationCreatedId = "";

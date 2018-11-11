@@ -25,6 +25,7 @@ public class User implements UserDetails,Serializable
 	private String username;
 	private String password;
 	private String email;
+	private List<Events> eventsFaved;
 	
 	public String getEmail() {
 		return email;
@@ -56,6 +57,14 @@ public class User implements UserDetails,Serializable
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	@ManyToMany
+	public List<Events> getEventsFaved() {
+		return eventsFaved;
+	}
+	public void setEventsFaved(List<Events> list) {
+		this.eventsFaved=list;
+	}
+	
 	@ManyToMany
 	@JoinTable(name="FavoriteStyles",
 		joinColumns = {@JoinColumn ( name =  "user_id")},
