@@ -64,7 +64,7 @@ public class UserController {
 	 return userRepository.findAll();
   }
   
-  @RequestMapping(value="user/getbyusername/{username}")
+  @RequestMapping(value="/user/{username}")
   public User getUserByUsername(@PathVariable("username") String username) {
 	  return userRepository.findByUsername(username);	
   }
