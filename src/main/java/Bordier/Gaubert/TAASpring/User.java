@@ -96,6 +96,7 @@ public class User implements UserDetails,Serializable
 		this.password = password;
 	}
 	
+	
 	public User(String username, String password) {
 		this.username = username;
 		this.FavoriteStyles = new ArrayList<StyleMusic>();

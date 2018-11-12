@@ -33,6 +33,7 @@ public class EventsController {
 	/**
 	 * POST /create  --> Create a new style music and save it in the database.
 	 */
+	
 	@RequestMapping(value="/events/create",method=RequestMethod.POST)
 	@ResponseBody
 	public Events create(@RequestBody Events event) {

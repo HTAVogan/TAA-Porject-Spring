@@ -64,10 +64,12 @@ public class UserController {
 	 return userRepository.findAll();
   }
   
-  @RequestMapping(value="/user/{username}")
+  @RequestMapping(value="/user/username/{username}")
+  @ResponseBody
   public User getUserByUsername(@PathVariable("username") String username) {
 	  return userRepository.findByUsername(username);	
   }
+  
   
   public boolean userExistWithId(long id) {
 	  boolean ret = false;

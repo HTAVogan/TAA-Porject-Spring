@@ -67,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         public void onAuthenticationSuccess(HttpServletRequest request,
                                             HttpServletResponse response, Authentication authentication)
                 throws IOException, ServletException {
+        	
             response.setStatus(HttpServletResponse.SC_OK);
         }
     }

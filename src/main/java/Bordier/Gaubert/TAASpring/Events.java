@@ -128,6 +128,7 @@ public class Events {
 	public List<Location> getLocations() {
 		return locations;
 	}
+	
 	public void setLocations(List<Location> locations) {
 		this.locations = locations;
 	}
