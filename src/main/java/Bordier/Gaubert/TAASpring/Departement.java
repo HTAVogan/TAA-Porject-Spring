@@ -1,7 +1,8 @@
 package Bordier.Gaubert.TAASpring;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
-
+@Entity
 public class Departement extends Location{
 	public Departement() {
 		

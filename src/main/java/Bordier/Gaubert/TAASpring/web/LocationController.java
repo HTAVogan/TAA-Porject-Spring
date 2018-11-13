@@ -96,6 +96,7 @@ public class LocationController {
 		  try {
 			  Location foundLocation = locationRepository.findByName(name);
 			  if(foundLocation == null) {
+				  System.out.println("JE SUIS PASSE LA");
 				  switch(type) {
 					  case "region":
 						newLocation = new Region(name);
