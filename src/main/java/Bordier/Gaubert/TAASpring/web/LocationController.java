@@ -22,6 +22,29 @@ public class LocationController {
 	private LocationRepository locationRepository;
 	
 	
+	@RequestMapping(value="/locations/region/create" ,method=RequestMethod.POST)
+	@ResponseBody
+	public Region createR(Region name) {
+		try {
+			Location foundedcity = locationRepository.findByName(name.getName());
+			if(foundedcity == null) {
+				
+				locationRepository.save(name);
+				return name;
+			}
+			else {
+				System.out.println("Region deja présent");
+				return null;
+			}
+		}
+		catch(Exception ex){
+			System.out.println("Problem a la creation du Région");
+			return null;
+		}
+	}
+	
+	
+	
 	@RequestMapping(value="/locations/departement/create" ,method=RequestMethod.POST)
 	@ResponseBody
 	public Departement createD(Departement name) {
