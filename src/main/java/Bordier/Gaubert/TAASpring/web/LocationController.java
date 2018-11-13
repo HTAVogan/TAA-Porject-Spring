@@ -51,7 +51,7 @@ public class LocationController {
 		try {
 			Location foundedcity = locationRepository.findByName(name.getName());
 			if(foundedcity == null) {
-				
+				System.out.println("\n JE SUIS PASSE PAR LA \n ");
 				locationRepository.save(name);
 				return name;
 			}
@@ -61,7 +61,7 @@ public class LocationController {
 			}
 		}
 		catch(Exception ex){
-			System.out.println("Problem a la creation du Departement");
+			System.out.println("Problem a la creation du Departement : " + ex);
 			return null;
 		}
 	}
@@ -96,14 +96,14 @@ public class LocationController {
 		  try {
 			  Location foundLocation = locationRepository.findByName(name);
 			  if(foundLocation == null) {
-				  switch(Integer.valueOf(type)) {
-					  case 0:
+				  switch(type) {
+					  case "region":
 						newLocation = new Region(name);
 						break;
-					  case 1:
+					  case "departement":
 						newLocation = new Departement(name);
 						break;
-					  case 2:
+					  case "ville":
 						newLocation = new Ville(name);
 						break;
 					  default:
