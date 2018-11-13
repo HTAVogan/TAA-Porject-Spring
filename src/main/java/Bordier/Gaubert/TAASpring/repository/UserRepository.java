@@ -15,7 +15,7 @@ import Bordier.Gaubert.TAASpring.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 	
-	//public User findById(Long id);
+	
 	
 /*	@Modifying
 	//@Query("update User u set u.favoriteStyle = set.favoriteStyle & ?1 where u.id = ?2")
@@ -23,4 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	int setFixedFirstnameFor(long id, long lastname);*/
 	User findByUsername(String username);
 	List<User> findByEmail(String email);
+	User findById(long id);
 }

@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import Bordier.Gaubert.TAASpring.Events;
+import Bordier.Gaubert.TAASpring.Location;
+import Bordier.Gaubert.TAASpring.StyleMusic;
 import Bordier.Gaubert.TAASpring.User;
 import Bordier.Gaubert.TAASpring.repository.EventsRepository;
+import Bordier.Gaubert.TAASpring.repository.LocationRepository;
+import Bordier.Gaubert.TAASpring.repository.StyleMusicRepository;
 import Bordier.Gaubert.TAASpring.repository.UserRepository;
 import io.swagger.annotations.Api;
 @Api(value="eventcontroller", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -29,7 +33,12 @@ public class EventsController {
 
 	@Autowired
 	private UserRepository userRepository;
-
+	
+	@Autowired
+	private LocationRepository locationRepository;
+	
+	@Autowired
+	private StyleMusicRepository styleMusicRepository;
 	/**
 	 * POST /create  --> Create a new style music and save it in the database.
 	 */
@@ -40,16 +49,33 @@ public class EventsController {
 		String eventsCreatedId = "";
 		long user_id = event.getCreator().getUser_id();
 		String title= event.getTitle();
-		System.out.println(title + user_id);
+		
 		try {
-			// Other Method to get User by Id
-			//User foundUser = new User();
-			//foundUser.setUser_id(user_id);
-			User foundUser = userRepository.getOne(Long.valueOf(user_id));
-
+			List<Location> ll = new ArrayList<Location>();
+			for(StyleMusic sm : event.getMusicstyles()) {
+				//System.out.println("ICCCCIIIIIII Style"+ sm.getStyle()+ " / " + styleMusicRepository.findByStyle(sm.getStyle()) == null);
+				if(styleMusicRepository.findByStyle(sm.getStyle()) == null) {
+					styleMusicRepository.save(sm);
+				}
+			}
+			for(Location l : event.getLocations()) {
+				System.out.println("ICIIIIII LOCATION ");
+				if(locationRepository.findByName(l.getName())==null) {
+					locationRepository.save(l);
+					Location current = locationRepository.findByName(l.getName());
+					ll.add(current);
+				}
+				else {
+					Location current = locationRepository.findByName(l.getName());
+					ll.add(current);
+				}
+			}
+			event.setLocations(ll);
+			User foundUser = userRepository.findById(user_id);
 			if(foundUser != null) {
 				eventsRepository.save(event);	
 				eventsCreatedId = Long.toString(event.getId());
+				return event;
 			}
 			else {
 				String ret = "Can't create Event : No User found with id : " + user_id + "!";
@@ -61,7 +87,7 @@ public class EventsController {
 			System.err.println("Error at Events creation : " + ex.toString());
 			return null;
 		}
-		return event;
+		
 	}
 
 	@RequestMapping(value="/events", method=RequestMethod.GET,produces="application/json")
