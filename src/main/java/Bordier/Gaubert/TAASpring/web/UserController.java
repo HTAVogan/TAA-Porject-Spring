@@ -40,9 +40,7 @@ public class UserController {
   @RequestMapping( value ="/user/create",method=RequestMethod.POST)
   @ResponseBody
   public User create(@RequestBody User user) {
-	User foundUser = userRepository.getOne(user.getUser_id());
-	System.out.println(foundUser.getUser_id() == 0 ? "no foundUser" : "Userfound : " + user.getUsername());
-	if(foundUser.getUser_id() == 0) {
+	if(userRepository.findById(user.getUser_id()) == null) {
 		try {
 	      userRepository.save(user);
 	      System.out.println("User create correctly : " + user.getUsername());
