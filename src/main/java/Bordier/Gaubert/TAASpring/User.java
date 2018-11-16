@@ -26,6 +26,8 @@ public class User implements UserDetails,Serializable
 	private String password;
 	private String email;
 	private List<Events> eventsFaved;
+	private List<StyleMusic> FavoriteStyles;
+	private List<Location> favoriteLocations;
 	
 	public String getEmail() {
 		return email;
@@ -33,7 +35,6 @@ public class User implements UserDetails,Serializable
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	private List<StyleMusic> FavoriteStyles ;
 	@Id
 	@GeneratedValue
 	public long getUser_id() {
@@ -75,6 +76,17 @@ public class User implements UserDetails,Serializable
 	}
 	public void setFavoriteStyles(List<StyleMusic> favList) {
 		FavoriteStyles = favList;
+	}
+	@ManyToMany
+	@JoinTable(name="favoriteLocations",
+		joinColumns = {@JoinColumn ( name =  "user_id")},
+		inverseJoinColumns = { @JoinColumn(name = "id") }
+	)
+	public List<Location> getFavoriteLocations() {
+		return favoriteLocations;
+	}
+	public void setFavoriteLocations(List<Location> favoriteLocations) {
+		this.favoriteLocations = favoriteLocations;
 	}
 	
 	public User() {

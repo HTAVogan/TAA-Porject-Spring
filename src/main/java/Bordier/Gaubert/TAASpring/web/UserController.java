@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import Bordier.Gaubert.TAASpring.Events;
+import Bordier.Gaubert.TAASpring.Location;
 import Bordier.Gaubert.TAASpring.StyleMusic;
 import Bordier.Gaubert.TAASpring.User;
 import Bordier.Gaubert.TAASpring.repository.StyleMusicRepository;
@@ -35,7 +36,6 @@ public class UserController {
 
 	  @Autowired
 	  private StyleMusicRepository styleMusicRepository;
-	
 
   @RequestMapping( value ="/user/create",method=RequestMethod.POST)
   @ResponseBody
@@ -55,6 +55,26 @@ public class UserController {
 	}
     return user;
   }
+  
+  @RequestMapping( value ="/user/update",method=RequestMethod.PUT)
+  @ResponseBody
+  public User update(@RequestBody User user) {
+	  if(!userRepository.existsById(user.getUser_id())) {
+		  System.out.println("No user with this id ! plz give a correct id");
+	  }
+	  else {
+		  try {
+			  userRepository.save(user);
+		  	System.out.println("User modified !");
+		  }
+		  catch (Exception ex) {
+			  System.out.println("error encountered while update user to db : " + ex.toString());
+			  return null;
+		  }
+	  }
+	  return user;
+  }
+  
   @RequestMapping(value="/user", method=RequestMethod.GET,produces="application/json")
   @ResponseBody
   public List<User> allUser(){
@@ -84,9 +104,9 @@ public class UserController {
 	  catch (Exception ex) {
 		  System.err.println("Error while checking user with id : " + id + " exist or not : " + ex.toString());
 	  }
-	  return ret;
-	  
+	  return ret;  
   }
+  
   @RequestMapping(value="/user/addEvent", method=RequestMethod.PUT)
   public @ResponseBody User addNewEvent(@RequestBody User u,@RequestBody Events e) {
 	  List<Events>es =u.getEventsFaved();
@@ -96,7 +116,12 @@ public class UserController {
 	  return u;
   }
   
-  
+  @RequestMapping(value="/user/addEvents", method=RequestMethod.PUT)
+  public @ResponseBody User addNewEvents(@RequestBody User u,@RequestBody List<Events> es) {
+	  u.setEventsFaved(es);
+	  userRepository.save(u);
+	  return u;
+  }
   
   @RequestMapping(value="/user/{id}",method=RequestMethod.GET)
   public @ResponseBody User getById(@PathVariable("id") String id) {
@@ -161,7 +186,19 @@ public class UserController {
     }
   }
   
+  @RequestMapping(value="/user/musicstyles", method=RequestMethod.PUT)
+  public @ResponseBody User modifyFavoriteStyles(@RequestBody User u,@RequestBody List<StyleMusic> ms) {
+	  u.setFavoriteStyles(ms);
+	  userRepository.save(u);
+	  return u;
+  }
   
+  @RequestMapping(value="/user/locations", method=RequestMethod.PUT)
+  public @ResponseBody User modifyFavoriteLocations(@RequestBody User u,@RequestBody List<Location> ls) {
+	  u.setFavoriteLocations(ls);
+	  userRepository.save(u);
+	  return u;
+  }
   
   /**
    * GET /update  --> Update the email and the name for the user in the 

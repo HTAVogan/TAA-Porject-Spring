@@ -124,27 +124,25 @@ public class LocationController {
 		  return newLocation;
 	  }
 	  
-	  	/**
-		 * GET /get  --> get location id with name.
-		 */
-		  @RequestMapping(value="/locations/get/{name}", method=RequestMethod.GET)
-		  @ResponseBody
-		  public String get(@PathVariable("name")String name) {
-			  String locationId = "";
-			  try {
-				  Location foundLocation = locationRepository.findByName(name);
-				  if(foundLocation != null) {
-					  locationId = String.valueOf(foundLocation.getId());
-				  }else {
-					  String ret = "Can't found Location with name : " + name;
-					  System.err.println(ret);
-					  return ret;
-				  }
+  	/**
+	 * GET /get  --> get location id with name.
+	 */
+	  @RequestMapping(value="/locations/get/{name}", method=RequestMethod.GET)
+	  @ResponseBody
+	  public Location get(@PathVariable("name")String name) {
+		  try {
+			  Location foundLocation = locationRepository.findByName(name);
+			  if(foundLocation != null) {
+				  return foundLocation;
+			  }else {
+				  String ret = "Can't found Location with name : " + name;
+				  System.err.println(ret);
+				  return null;
 			  }
-			  catch(Exception ex) {
-				  System.err.println("Error at Location creation : " + ex.toString());
-				  return "Couldn't create new Location";
-			  }
-			  return locationId;
 		  }
+		  catch(Exception ex) {
+			  System.err.println("Error at Location creation : " + ex.toString());
+			  return null;
+		  }
+	  }	  
 }
