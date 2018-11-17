@@ -28,7 +28,14 @@ public class User implements UserDetails,Serializable
 	private List<Events> eventsFaved;
 	private List<StyleMusic> FavoriteStyles;
 	private List<Location> favoriteLocations;
+	private byte[] profile_img;
 	
+	public byte[] getProfile_img() {
+		return profile_img;
+	}
+	public void setProfile_img(byte[] profile_img) {
+		this.profile_img = profile_img;
+	}
 	public String getEmail() {
 		return email;
 	}

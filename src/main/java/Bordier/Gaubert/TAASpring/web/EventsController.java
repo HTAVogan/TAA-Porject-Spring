@@ -89,6 +89,20 @@ public class EventsController {
 		}
 		
 	}
+	
+	@RequestMapping(value="/event/update", method=RequestMethod.POST,headers= "content-type=multipart/form-data", produces="application/json")
+	@ResponseBody
+	public Events addImgToEvent(@RequestBody Events event,@RequestBody byte[] img) {
+		try {
+			event.setImg(img);
+			eventsRepository.save(event);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error while updating img of event " + event.getId() + " : " + e.toString());
+			return null;
+		}
+		return event;
+	}
 
 	@RequestMapping(value="/events", method=RequestMethod.GET,produces="application/json")
 	@ResponseBody
