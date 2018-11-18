@@ -29,23 +29,22 @@ public class StyleMusicController {
 	@RequestMapping(value="/music/create", method=RequestMethod.POST)
 	@ResponseBody
 	public StyleMusic create(@RequestBody String style) {
-		String styleMusicId = "";
+		StyleMusic newMusic = new StyleMusic("ALREADY_EXIST");
 		try {
-			StyleMusic newMusic = styleMusicRepository.findByStyle(style);
-			if(newMusic == null) {
+			StyleMusic foundMusic = styleMusicRepository.findByStyle(style);
+			System.out.println("foundMusic : " + foundMusic == null ? "null !" : foundMusic.toString());
+			if(foundMusic == null) {
 				newMusic = new StyleMusic(style);
 				styleMusicRepository.save(newMusic);
-				styleMusicId = String.valueOf(newMusic.getStyleMusic_id());
-				return newMusic;
 			}
 			else {
 				System.err.println("Can't create new Style music : already exist with id : " + newMusic.getStyleMusic_id());
 			}
 		}
 		catch (Exception ex) {
-			return null;
+			return new StyleMusic("ERROR");
 		}
-		return null;
+		return newMusic;
 	}
 
 	/**
