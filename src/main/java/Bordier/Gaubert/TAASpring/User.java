@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class User implements UserDetails,Serializable
-{
+public class User implements UserDetails,Serializable{
 	
 	private long user_id;
 	private String username;

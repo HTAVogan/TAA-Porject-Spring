@@ -17,16 +17,21 @@ import lombok.extern.slf4j.Slf4j;
 
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private User user ;
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("\n ICCCCCIIIIIIIIIIIIIIIIIIIIIII : "+username+"\n");
         Objects.requireNonNull(username);
-        System.out.println("\n ICCCCCIIIIIIIIIIIIIIIIIIIIIII : "+username+"\n");
         User user = userRepository.findByUsername(username);
+        this.user=user;
         return user;
+    }
+    public boolean password(String password) {
+    	 System.out.println("USER PASSWORD : " + user.getPassword());
+         System.out.println("GIVEN PASSWORD : "+ password);
+    	return (this.user.getPassword().equals(password));
     }
 }
