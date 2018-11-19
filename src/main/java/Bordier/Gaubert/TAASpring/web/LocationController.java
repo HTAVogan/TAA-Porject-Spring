@@ -90,8 +90,7 @@ public class LocationController {
 	  @RequestMapping(value="/locations/create/{name}/{type}" ,method=RequestMethod.POST)
 	  @ResponseBody
 	  public Location create(@PathVariable("name")String name, @PathVariable("type")String type) {
-		  String locationCreatedId = "";
-		  Location newLocation;
+		  Location newLocation = new Location("ALREADY_EXIST");
 		  System.out.println("Creation of location");
 		  try {
 			  Location foundLocation = locationRepository.findByName(name);
@@ -114,12 +113,12 @@ public class LocationController {
 			  }else {
 				  String ret = "Can't create Location : A location with same name found with id : " + foundLocation.getId() + "!";
 				  System.err.println(ret);
-				  return null;
+				  return newLocation;
 			  }
 		  }
 		  catch(Exception ex) {
 			  System.err.println("Error at Location creation : " + ex.toString());
-			  return null;
+			  return new Location("ERROR");
 		  }
 		  return newLocation;
 	  }

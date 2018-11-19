@@ -19,8 +19,10 @@ import Bordier.Gaubert.TAASpring.Events;
 import Bordier.Gaubert.TAASpring.Location;
 import Bordier.Gaubert.TAASpring.StyleMusic;
 import Bordier.Gaubert.TAASpring.User;
+import Bordier.Gaubert.TAASpring.repository.EventsRepository;
 import Bordier.Gaubert.TAASpring.repository.StyleMusicRepository;
 import Bordier.Gaubert.TAASpring.repository.UserRepository;
+import Bordier.Gaubert.TAASpring.requestbody.FollowEventRequestBody;
 import io.swagger.annotations.Api;
 
 
@@ -36,6 +38,9 @@ public class UserController {
 
 	  @Autowired
 	  private StyleMusicRepository styleMusicRepository;
+	  
+	  @Autowired
+	  private EventsRepository eventRepository;
 
   @RequestMapping( value ="/user/create",method=RequestMethod.POST)
   @ResponseBody
@@ -106,6 +111,7 @@ public class UserController {
 	  }
 	  return ret;  
   }
+  /*
   
   @RequestMapping(value="/user/addEvent", method=RequestMethod.PUT)
   public @ResponseBody User addNewEvent(@RequestBody User u,@RequestBody Events e) {
@@ -113,6 +119,74 @@ public class UserController {
 	  es.add(e);
 	  u.setEventsFaved(es);
 	  userRepository.save(u);
+	  return u;
+  }
+  */
+  @RequestMapping(value="/user/addEvent", method=RequestMethod.PUT)
+  public @ResponseBody User addNewEventWithRequestBody(@RequestBody FollowEventRequestBody rq) {
+	  User u = rq.getUser();
+	  if(u == null) {
+		  System.out.println("No USER !!!!");
+		  return new User("USER_NULL");
+	  }
+	  User foundUser = userRepository.findById(u.getUser_id());
+	  if(foundUser == null) {
+		  System.out.println("No USER FOUND !!!!");
+		  return new User("USER_NOT_FOUND");
+	  }
+	  Events e = rq.getEvent();
+	  if(e == null) {
+		  System.out.println("No EVENT !!!!");
+		  return new User("EVENT_NULL");
+	  }
+	  Events foundEvent = eventRepository.findById(e.getId());
+	  if(foundEvent == null) {
+		  System.out.println("No EVENT FOUND !!!!");
+		  return new User("EVENT_NOT_FOUND");
+	  }
+	  List<Events>es = u.getEventsFaved();
+	  if(!es.contains(e)) {
+		  es.add(e);
+		  u.setEventsFaved(es);
+		  userRepository.save(u);
+	  }
+	  else {
+		  System.out.println("User " + u.getUser_id() + " ALREADY_FOLLOW event with id : " + e.getId());
+	  }
+	  return u;
+  }
+  
+  @RequestMapping(value="/user/removeEvent", method=RequestMethod.PUT)
+  public @ResponseBody User removeEventWithRequestBody(@RequestBody FollowEventRequestBody rq) {
+	  User u = rq.getUser();
+	  if(u == null) {
+		  System.out.println("No USER !!!!");
+		  return new User("USER_NULL");
+	  }
+	  User foundUser = userRepository.findById(u.getUser_id());
+	  if(foundUser == null) {
+		  System.out.println("No USER FOUND !!!!");
+		  return new User("USER_NOT_FOUND");
+	  }
+	  Events e = rq.getEvent();
+	  if(e == null) {
+		  System.out.println("No EVENT !!!!");
+		  return new User("EVENT_NULL");
+	  }
+	  Events foundEvent = eventRepository.findById(e.getId());
+	  if(foundEvent == null) {
+		  System.out.println("No EVENT FOUND !!!!");
+		  return new User("EVENT_NOT_FOUND");
+	  }
+	  List<Events>es = u.getEventsFaved();
+	  if(es.contains(e)) {
+		  es.remove(e);
+		  u.setEventsFaved(es);
+		  userRepository.save(u);
+	  }
+	  else {
+		  System.out.println("User " + u.getUser_id() + " DONT follow event with id : " + e.getId());
+	  }
 	  return u;
   }
   
