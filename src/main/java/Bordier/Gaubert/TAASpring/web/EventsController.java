@@ -107,14 +107,14 @@ public class EventsController {
 			return new Events("IMG_NULL", "");
 		}
 		try {
-			event.setImg(img);
-			eventsRepository.save(event);
+			foundEvent.setImg(img);
+			eventsRepository.save(foundEvent);
+			return foundEvent;
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error while updating img of event " + event.getId() + " : " + e.toString());
 			return new Events("ERROR", "");
 		}
-		return event;
 	}
 
 	@RequestMapping(value="/events", method=RequestMethod.GET,produces="application/json")
