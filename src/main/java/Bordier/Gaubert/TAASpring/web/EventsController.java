@@ -23,6 +23,7 @@ import Bordier.Gaubert.TAASpring.repository.EventsRepository;
 import Bordier.Gaubert.TAASpring.repository.LocationRepository;
 import Bordier.Gaubert.TAASpring.repository.StyleMusicRepository;
 import Bordier.Gaubert.TAASpring.repository.UserRepository;
+import Bordier.Gaubert.TAASpring.requestbody.AddImgToEventRequestBody;
 import io.swagger.annotations.Api;
 @Api(value="eventcontroller", produces=MediaType.APPLICATION_JSON_VALUE)
 @Controller
@@ -92,14 +93,26 @@ public class EventsController {
 	
 	@RequestMapping(value="/event/update", method=RequestMethod.POST,headers= "content-type=multipart/form-data", produces="application/json")
 	@ResponseBody
-	public Events addImgToEvent(@RequestBody Events event,@RequestBody byte[] img) {
+	public Events addImgToEvent(@RequestBody AddImgToEventRequestBody rq) {
+		Events event = rq.getEvent();
+		if(event == null) {
+			return new Events("EVENT_NULL", "");
+		}
+		Events foundEvent = eventsRepository.findById(event.getId());
+		if(foundEvent == null) {
+			return new Events("EVENT_NOT_FOUND", "");
+		}
+		byte[] img = rq.getImg();
+		if(img == null) {
+			return new Events("IMG_NULL", "");
+		}
 		try {
 			event.setImg(img);
 			eventsRepository.save(event);
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error while updating img of event " + event.getId() + " : " + e.toString());
-			return null;
+			return new Events("ERROR", "");
 		}
 		return event;
 	}

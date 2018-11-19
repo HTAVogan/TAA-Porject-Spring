@@ -144,11 +144,12 @@ public class UserController {
 		  System.out.println("No EVENT FOUND !!!!");
 		  return new User("EVENT_NOT_FOUND");
 	  }
-	  List<Events>es = u.getEventsFaved();
-	  if(!es.contains(e)) {
-		  es.add(e);
-		  u.setEventsFaved(es);
-		  userRepository.save(u);
+	  List<Events>es = foundUser.getEventsFaved();
+	  if(!es.contains(foundEvent)) {
+		  es.add(foundEvent);
+		  foundUser.setEventsFaved(es);
+		  userRepository.save(foundUser);
+		  return foundUser;
 	  }
 	  else {
 		  System.out.println("User " + u.getUser_id() + " ALREADY_FOLLOW event with id : " + e.getId());
@@ -178,11 +179,12 @@ public class UserController {
 		  System.out.println("No EVENT FOUND !!!!");
 		  return new User("EVENT_NOT_FOUND");
 	  }
-	  List<Events>es = u.getEventsFaved();
-	  if(es.contains(e)) {
-		  es.remove(e);
-		  u.setEventsFaved(es);
-		  userRepository.save(u);
+	  List<Events>es = foundUser.getEventsFaved();
+	  if(es.contains(foundEvent)) {
+		  es.remove(foundEvent);
+		  foundUser.setEventsFaved(es);
+		  userRepository.save(foundUser);
+		  return foundUser;
 	  }
 	  else {
 		  System.out.println("User " + u.getUser_id() + " DONT follow event with id : " + e.getId());
